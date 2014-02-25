@@ -1,4 +1,12 @@
 {
+  "name": "comply",
+  "description": "Schema enforcement and object sanitizer",
+  "version": "0.1.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VisibleWorld/comply.js.git"
+  },
   "dependencies": {
     "lodash": "~2.4.1"
   }
