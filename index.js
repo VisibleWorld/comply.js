@@ -1,9 +1,5 @@
 var _ = require('lodash');
 
-function Schema(rules, o) {
-    this.rules = rules;
-}
-
 function constant(o) {
     return o;
 }
@@ -12,10 +8,6 @@ function extend(o, f, v) {
     var nO = _.clone(o);
     nO[f] = v;
     return nO;
-}
-
-function isDate(s) {
-    return moment(s).isValid();
 }
 
 function isSchema(s) {
@@ -94,6 +86,10 @@ function testProperty(rules, o, k) {
     }
 }
 
+function Schema(rules) {
+    this.rules = rules;
+}
+
 Schema.prototype.test = function(o) {
     var rules = this.rules;
     return _(rules).keys().map(_.curry(testProperty)(rules)(o)).foldl(function(o, r) {
@@ -108,11 +104,5 @@ Schema.prototype.test = function(o) {
         object: {}
     });
 };
-
-function flip(func) {
-    return function() {
-        return func.apply(this, Array.prototype.slice.call(arguments, 0).reverse());
-    };
-}
 
 module.exports = Schema;
