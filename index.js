@@ -37,27 +37,27 @@ function validationResult(pass, message, field, valueAccessor) {
     }
 }
 
-function runValidator(o, k, v) {
+function runValidator(o, k, extra, v) {
     try {
-        return v.bind(o)(o[k]);
+        return v.apply(o, [o[k]].concat(extra));
     }
     catch (err) {
         return false;
     }
 }
 
-function testNonSchemaValidators(rules, o, k) {
-    var run = _.curry(runValidator)(o)(k),
+function testNonSchemaValidators(rules, o, extra, k) {
+    var run = _.curry(runValidator)(o)(k)(extra),
         pass = _(rules[k].validators).reject(isSchema).map(run).every();
     return validationResult(pass, rules[k].message, k === '*' ? '' : k, function() {
         return (rules[k].sanitizer || constant)(o[k]);
     });
 }
 
-function testProperty(rules, o, k) {
+function testProperty(rules, o, extra, k) {
     var f = o[k],
         r = rules[k],
-        nsv = testNonSchemaValidators(rules, o, k);
+        nsv = testNonSchemaValidators(rules, o, extra, k);
 
     if (_.isArray(f)) {
         var sch = _.find(r.validators, isSchema);
@@ -91,8 +91,11 @@ function Schema(rules) {
 }
 
 Schema.prototype.test = function(o) {
-    var rules = this.rules;
-    return _(rules).keys().map(_.curry(testProperty)(rules)(o)).foldl(function(o, r) {
+    var self = this,
+        rules = self.rules,
+        extra = Array.prototype.slice.call(arguments, 1);
+
+    return _(rules).keys().map(_.curry(testProperty)(rules)(o)(extra)).foldl(function(o, r) {
         return {
             valid: o.valid && r.pass,
             errors: !r.pass ? o.errors.concat(r.message) : o.errors,
