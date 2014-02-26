@@ -57,11 +57,10 @@ function testNonSchemaValidators(rules, o, extra, k) {
 function testProperty(rules, o, extra, k) {
     var f = o[k],
         r = rules[k],
-        nsv = testNonSchemaValidators(rules, o, extra, k);
+        nsv = testNonSchemaValidators(rules, o, extra, k),
+        sch = _.find(r.validators, isSchema);
 
-    if (_.isArray(f)) {
-        var sch = _.find(r.validators, isSchema);
-
+    if (_.isArray(f) && sch && sch.test) {
         if (nsv.pass) {
             var xs = _.map(f, sch.test.bind(sch)),
                 pass = _.every(xs, 'valid');
