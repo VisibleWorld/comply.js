@@ -1,8 +1,10 @@
 {
   "name": "comply",
   "description": "Schema enforcement and object sanitizer",
+  "author": "Peter Zalewski <peter@zalewski.com>",
   "version": "0.1.0",
   "private": true,
+  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/VisibleWorld/comply.js.git"
