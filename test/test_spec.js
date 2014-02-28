@@ -52,5 +52,27 @@ describe("Schema", function() {
             sinon.assert.calledWith(v, 'test1');
             sinon.assert.calledWith(v, 'test2');
         });
+
+        it("should call Schema.test() on object member", function() {
+            var v = sinon.stub().returns(true),
+                subSchema = new Schema({
+                    'id': {
+                        validators: [v]
+                    }
+                }),
+                schema = new Schema({
+                    'obj': {
+                        validators: [subSchema]
+                    }
+                }),
+                obj = { 'id': 1 };
+
+            void(schema.test({
+                'obj': obj
+            }));
+
+            sinon.assert.calledOnce(v);
+            sinon.assert.calledWith(v, obj.id);
+        });
     });
 });
