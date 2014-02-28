@@ -24,6 +24,43 @@ describe("Schema", function() {
             sinon.assert.calledWith(v2, 'test');
         });
 
+        it("should return valid if all validators pass", function() {
+            var v1 = sinon.stub().returns(true),
+                v2 = sinon.stub().returns(true),
+                v3 = sinon.stub().returns(true),
+                schema = new Schema({
+                    'foo': {
+                        validators: [v1, v2]
+                    },
+                    'bar': {
+                        validators: [v3]
+                    }
+                });
+
+            var result = schema.test({'foo': true, 'bar': true});
+
+            expect(result.valid).to.be.true;
+        });
+
+        it("should return invalid if any validators fail", function() {
+            var v1 = sinon.stub().returns(true),
+                v2 = sinon.stub().returns(false),
+                v3 = sinon.stub().returns(true),
+                schema = new Schema({
+                    'foo': {
+                        validators: [v1, v2]
+                    },
+                    'bar': {
+                        validators: [v3]
+                    }
+                });
+
+            var result = schema.test({'foo': true, 'bar': true});
+
+            expect(result.valid).to.be.false;
+        });
+
+
         it("should call Schema.test() on all array elements", function() {
             var v = sinon.stub().returns(true),
                 subSchema = new Schema({
@@ -65,7 +102,9 @@ describe("Schema", function() {
                         validators: [subSchema]
                     }
                 }),
-                obj = { 'id': 1 };
+                obj = {
+                    'id': 1
+                };
 
             void(schema.test({
                 'obj': obj
