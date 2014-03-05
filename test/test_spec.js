@@ -37,7 +37,10 @@ describe("Schema", function() {
                     }
                 });
 
-            var result = schema.test({'foo': true, 'bar': true});
+            var result = schema.test({
+                'foo': true,
+                'bar': true
+            });
 
             expect(result.valid).to.be.true;
         });
@@ -55,7 +58,10 @@ describe("Schema", function() {
                     }
                 });
 
-            var result = schema.test({'foo': true, 'bar': true});
+            var result = schema.test({
+                'foo': true,
+                'bar': true
+            });
 
             expect(result.valid).to.be.false;
         });
@@ -112,6 +118,39 @@ describe("Schema", function() {
 
             sinon.assert.calledOnce(v);
             sinon.assert.calledWith(v, obj.id);
+        });
+
+        it("should call validator in simple, single-validator schema format", function() {
+            var v = sinon.stub().returns(true),
+                schema = new Schema({
+                    'foo': v
+                }),
+                obj = {
+                    'foo': 1
+                };
+
+            void(schema.test(obj));
+
+            sinon.assert.calledOnce(v);
+            sinon.assert.calledWith(v, obj.foo);
+        });
+
+        it("should call all validators in simple, multiple-validator schema format", function() {
+            var v1 = sinon.stub().returns(true),
+                v2 = sinon.stub().returns(true),
+                schema = new Schema({
+                    'foo': [v1, v2]
+                }),
+                obj = {
+                    'foo': 1
+                };
+
+            void(schema.test(obj));
+
+            sinon.assert.calledOnce(v1);
+            sinon.assert.calledWith(v1, obj.foo);
+            sinon.assert.calledOnce(v2);
+            sinon.assert.calledWith(v2, obj.foo);
         });
     });
 });
