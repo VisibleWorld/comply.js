@@ -152,5 +152,33 @@ describe("Schema", function() {
             sinon.assert.calledOnce(v2);
             sinon.assert.calledWith(v2, obj.foo);
         });
+
+        it("should not fail when optional field is missing", function() {
+            var v = sinon.stub().returns(true),
+                schema = new Schema({
+                    'foo?': v
+                }),
+                obj = {
+                    'bar': 2
+                };
+
+            var result = schema.test(obj);
+
+            expect(result.valid).to.be.true;
+        });
+
+        it("should fail when required field is missing", function() {
+            var v = sinon.stub().returns(true),
+                schema = new Schema({
+                    'foo': v
+                }),
+                obj = {
+                    'bar': 2
+                };
+
+            var result = schema.test(obj);
+
+            expect(result.valid).to.be.false;
+        });
     });
 });
