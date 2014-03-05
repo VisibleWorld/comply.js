@@ -154,7 +154,7 @@ describe("Schema", function() {
         });
 
         it("should not fail when optional field is missing", function() {
-            var v = sinon.stub().returns(true),
+            var v = sinon.stub().returns(false),
                 schema = new Schema({
                     'foo?': v
                 }),
