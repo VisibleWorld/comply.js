@@ -167,6 +167,21 @@ describe("Schema", function() {
             expect(result.valid).to.be.true;
         });
 
+        it("should fail when optional field fails validation", function() {
+            var v = sinon.stub().returns(false),
+                schema = new Schema({
+                    'foo?': v
+                }),
+                obj = {
+                    'foo': 1
+                };
+
+            var result = schema.test(obj);
+
+            sinon.assert.calledOnce(v);
+            expect(result.valid).to.be.false;
+        });
+
         it("should fail when required field is missing", function() {
             var v = sinon.stub().returns(true),
                 schema = new Schema({
