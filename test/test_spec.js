@@ -167,6 +167,48 @@ describe("Schema", function() {
             expect(result.valid).to.be.true;
         });
 
+        it("should coerce to boolean in simple boolean schema format", function() {
+            var schema = new Schema({
+                    'foo': true
+                }),
+                obj = {
+                    'foo': '5'
+                };
+
+            var result = schema.test(obj);
+
+            expect(result.valid).to.be.true;
+            expect(result.object.foo).to.equal(!!obj.foo);
+        });
+
+        it("should coerce to number in simple number schema format", function() {
+            var schema = new Schema({
+                    'foo': 1
+                }),
+                obj = {
+                    'foo': '6'
+                };
+
+            var result = schema.test(obj);
+
+            expect(result.valid).to.be.true;
+            expect(result.object.foo).to.equal(~~obj.foo);
+        });
+
+        it("should coerce to string in simple string schema format", function() {
+            var schema = new Schema({
+                    'foo': ''
+                }),
+                obj = {
+                    'foo': 5
+                };
+
+            var result = schema.test(obj);
+
+            expect(result.valid).to.be.true;
+            expect(result.object.foo).to.equal(obj.foo + '');
+        });
+
         it("should fail when optional field fails validation", function() {
             var v = sinon.stub().returns(false),
                 schema = new Schema({
