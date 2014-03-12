@@ -15,6 +15,7 @@ describe('Schema', function() {
                 var result = schema.test({'foo': 'abc'});
 
                 expect(result.valid).to.be.true;
+                expect(result.object.foo).to.equal('abc');
             });
 
             it('should check length with 1 numeric argument', function() {
