@@ -1,4 +1,4 @@
-var Schema = require('../lib'),
+var Schema = require('../lib').Schema,
     expect = require('chai').expect,
     sinon = require('sinon');
 
