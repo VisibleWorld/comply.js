@@ -237,5 +237,22 @@ describe("Schema", function() {
 
             expect(result.valid).to.be.false;
         });
+
+        it("should pass when testing schema on optional array", function() {
+            var v = sinon.stub().returns(true),
+                arrSch = new Schema({
+                    'foo': v
+                }),
+                objSch = new Schema({
+                    'bar?': {
+                        validators: [arrSch]
+                    }
+                }),
+                obj = {};
+
+            var result = objSch.test(obj);
+
+            expect(result.valid).to.be.true;
+        });
     });
 });
