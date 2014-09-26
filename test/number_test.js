@@ -70,6 +70,15 @@ describe('Schema', function () {
                 sinon.assert.calledOnce(v1);
                 sinon.assert.calledOnce(v2);
             });
+
+            it('should coerce value to float', function () {
+                var schema = new Schema({ 'foo': NumberType() });
+
+                var result = schema.test({ 'foo': '10.123' });
+
+                expect(result.valid).to.be.true;
+                expect(result.object.foo).to.equal(10.123);
+            });
         });
     });
 });
