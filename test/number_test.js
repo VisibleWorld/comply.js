@@ -79,6 +79,22 @@ describe('Schema', function () {
                 expect(result.valid).to.be.true;
                 expect(result.object.foo).to.equal(10.123);
             });
+
+            it('should fail when passed NaN', function () {
+                var schema = new Schema({ 'foo': NumberType() });
+
+                var result = schema.test({ 'foo': NaN});
+
+                expect(result.valid).to.be.false;
+            });
+
+            it('should fail when passed a string', function () {
+                var schema = new Schema({ 'foo': NumberType() });
+
+                var result = schema.test({ 'foo': 'random string'});
+
+                expect(result.valid).to.be.false;
+            });
         });
     });
 });
