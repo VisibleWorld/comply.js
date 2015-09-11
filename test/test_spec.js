@@ -1,3 +1,8 @@
+/* global describe, it */
+/* jshint expr: true */
+
+'use strict';
+
 var Schema = require('../lib');
 var expect = require('chai').expect;
 var sinon = require('sinon');
@@ -14,9 +19,9 @@ describe("Schema", function() {
                     },
                 });
 
-            void(schema.test({
+            schema.test({
                 name: 'test',
-            }));
+            });
 
             sinon.assert.calledOnce(v1);
             sinon.assert.calledWith(v1, 'test');
@@ -79,7 +84,7 @@ describe("Schema", function() {
                     },
                 });
 
-            void(schema.test({
+            schema.test({
                 array: [
                     {
                         id: 'test1',
@@ -88,7 +93,7 @@ describe("Schema", function() {
                         id: 'test2',
                     },
                 ],
-            }));
+            });
 
             sinon.assert.calledTwice(v);
             sinon.assert.calledWith(v, 'test1');
@@ -111,9 +116,9 @@ describe("Schema", function() {
                     id: 1,
                 };
 
-            void(schema.test({
+            schema.test({
                 obj: obj,
-            }));
+            });
 
             sinon.assert.calledOnce(v);
             sinon.assert.calledWith(v, obj.id);
@@ -128,7 +133,7 @@ describe("Schema", function() {
                     foo: 1,
                 };
 
-            void(schema.test(obj));
+            schema.test(obj);
 
             sinon.assert.calledOnce(v);
             sinon.assert.calledWith(v, obj.foo);
@@ -144,7 +149,7 @@ describe("Schema", function() {
                     foo: 1,
                 };
 
-            void(schema.test(obj));
+            schema.test(obj);
 
             sinon.assert.calledOnce(v1);
             sinon.assert.calledWith(v1, obj.foo);

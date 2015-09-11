@@ -1,7 +1,10 @@
+/* global describe, it */
+/* jshint expr: true */
+
 'use strict';
 
 var Schema = require('../lib');
-var PassType = Schema.type.Pass;
+var passType = Schema.type.Pass;
 var expect = require('chai').expect;
 
 describe('Schema', function() {
@@ -9,7 +12,7 @@ describe('Schema', function() {
         describe('Pass()', function() {
 
             it('should validate undefined', function() {
-                var schema = new Schema({ foo: PassType() });
+                var schema = new Schema({ foo: passType() });
 
                 var result = schema.test({ foo: undefined });
 
@@ -18,7 +21,7 @@ describe('Schema', function() {
             });
 
             it('should validate null', function() {
-                var schema = new Schema({ foo: PassType() });
+                var schema = new Schema({ foo: passType() });
 
                 var result = schema.test({ foo: null });
 
@@ -27,7 +30,7 @@ describe('Schema', function() {
             });
 
             it('should validate some value', function() {
-                var schema = new Schema({ foo: PassType() });
+                var schema = new Schema({ foo: passType() });
                 var o = { foo: 3 };
 
                 var result = schema.test(o);
@@ -37,7 +40,7 @@ describe('Schema', function() {
             });
 
             it('should validate some object', function() {
-                var schema = new Schema({ foo: PassType() });
+                var schema = new Schema({ foo: passType() });
                 var o = { foo: { bar: 6 } };
 
                 var result = schema.test(o);

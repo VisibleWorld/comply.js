@@ -1,7 +1,10 @@
+/* global describe, it */
+/* jshint expr: true */
+
 'use strict';
 
 var Schema = require('../lib');
-var NumberType = Schema.type.Number;
+var numberType = Schema.type.Number;
 var expect = require('chai').expect;
 var sinon = require('sinon');
 
@@ -10,7 +13,7 @@ describe('Schema', function() {
         describe('Number()', function() {
 
             it('should allow no arguments', function() {
-                var schema = new Schema({ foo: NumberType() });
+                var schema = new Schema({ foo: numberType() });
 
                 var result = schema.test({ foo: 10 });
 
@@ -19,7 +22,7 @@ describe('Schema', function() {
             });
 
             it('should coerce value to number', function() {
-                var schema = new Schema({ foo: NumberType() });
+                var schema = new Schema({ foo: numberType() });
 
                 var result = schema.test({ foo: '10' });
 
@@ -28,7 +31,7 @@ describe('Schema', function() {
             });
 
             it('should check minimum and maximum with 2 numeric arguments', function() {
-                var schema = new Schema({ foo: NumberType(5, 10) });
+                var schema = new Schema({ foo: numberType(5, 10) });
 
                 var minInvalid = schema.test({ foo: 3 });
                 var maxInvalid = schema.test({ foo: 12 });
@@ -40,7 +43,7 @@ describe('Schema', function() {
             });
 
             it('should check minimum with integer minimum and wildcard maximum', function() {
-                var schema = new Schema({foo: NumberType(5, '*') });
+                var schema = new Schema({foo: numberType(5, '*') });
 
                 var invalid = schema.test({ foo: 3 });
                 var valid = schema.test({ foo: 32768 });
@@ -50,7 +53,7 @@ describe('Schema', function() {
             });
 
             it('should check maximum with wildcard minimum and integer maximum', function() {
-                var schema = new Schema({ foo: NumberType('*', 10) });
+                var schema = new Schema({ foo: numberType('*', 10) });
 
                 var invalid = schema.test({ foo: 12 });
                 var valid = schema.test({ foo: 7 });
@@ -62,7 +65,7 @@ describe('Schema', function() {
             it('should accept variadic arguments as additional validators', function() {
                 var v1 = sinon.stub().returns(true);
                 var v2 = sinon.stub().returns(true);
-                var schema = new Schema({ foo: NumberType(1, '*', v1, v2) });
+                var schema = new Schema({ foo: numberType(1, '*', v1, v2) });
 
                 var result = schema.test({ foo: 10});
 
@@ -72,7 +75,7 @@ describe('Schema', function() {
             });
 
             it('should coerce value to float', function() {
-                var schema = new Schema({ foo: NumberType() });
+                var schema = new Schema({ foo: numberType() });
 
                 var result = schema.test({ foo: '10.123' });
 
@@ -81,7 +84,7 @@ describe('Schema', function() {
             });
 
             it('should fail when passed NaN', function() {
-                var schema = new Schema({ foo: NumberType() });
+                var schema = new Schema({ foo: numberType() });
 
                 var result = schema.test({ foo: NaN});
 
@@ -89,7 +92,7 @@ describe('Schema', function() {
             });
 
             it('should fail when passed a string', function() {
-                var schema = new Schema({ foo: NumberType() });
+                var schema = new Schema({ foo: numberType() });
 
                 var result = schema.test({ foo: 'random string'});
 

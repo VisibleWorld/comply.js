@@ -1,7 +1,10 @@
+/* global describe, it */
+/* jshint expr: true */
+
 'use strict';
 
 var Schema = require('../lib');
-var StringType = Schema.type.String;
+var stringType = Schema.type.String;
 var expect = require('chai').expect;
 var sinon = require('sinon');
 
@@ -10,7 +13,7 @@ describe('Schema', function() {
         describe('String()', function() {
 
             it('should allow no arguments', function() {
-                var schema = new Schema({ foo: StringType() });
+                var schema = new Schema({ foo: stringType() });
 
                 var result = schema.test({foo: 'abc'});
 
@@ -20,7 +23,7 @@ describe('Schema', function() {
 
             it('should check length with 1 numeric argument', function() {
                 var schema = new Schema({
-                    foo: StringType(5),
+                    foo: stringType(5),
                 });
 
                 var invalid = schema.test({
@@ -36,7 +39,7 @@ describe('Schema', function() {
 
             it('should check minimum and maximum length with 2 numeric arguments', function() {
                 var schema = new Schema({
-                    foo: StringType(3, 5),
+                    foo: stringType(3, 5),
                 });
 
                 var minInvalid = schema.test({
@@ -56,7 +59,7 @@ describe('Schema', function() {
 
             it('should test regex with 1 regex argument', function() {
                 var schema = new Schema({
-                    foo: StringType(/a[0-9]z/),
+                    foo: stringType(/a[0-9]z/),
                 });
 
                 var invalid = schema.test({
@@ -71,7 +74,7 @@ describe('Schema', function() {
             });
 
             it('should coerce value to string', function() {
-                var schema = new Schema({ foo: StringType() });
+                var schema = new Schema({ foo: stringType() });
 
                 var result = schema.test({ foo: 10 });
 
@@ -82,7 +85,7 @@ describe('Schema', function() {
             it('should accept variadic arguments as additional validators', function() {
                 var v1 = sinon.stub().returns(true);
                 var v2 = sinon.stub().returns(true);
-                var schema = new Schema({ foo: StringType(/a[0-9]z/, v1, v2) });
+                var schema = new Schema({ foo: stringType(/a[0-9]z/, v1, v2) });
 
                 var result = schema.test({ foo: 'a2z' });
 
