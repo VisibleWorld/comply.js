@@ -10,7 +10,7 @@
     "url": "https://github.com/VisibleWorld/comply.js.git"
   },
   "scripts": {
-    "lint": "jshint lib && jscs lib",
+    "lint": "jshint lib && jscs lib test",
     "pretest": "npm run lint -s",
     "test": "mocha --recursive -R spec test",
     "dev": "watch 'npm run test -s'"

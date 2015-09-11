@@ -1,21 +1,21 @@
-var Schema = require('../lib'),
-    expect = require('chai').expect,
-    sinon = require('sinon');
+var Schema = require('../lib');
+var expect = require('chai').expect;
+var sinon = require('sinon');
 
 describe("Schema", function() {
     describe(".test()", function() {
         it("should call all validators on property", function() {
-            var v1 = sinon.stub().returns(true),
-                v2 = sinon.stub().returns(true),
-                schema = new Schema({
-                    'name': {
+            var v1 = sinon.stub().returns(true);
+            var v2 = sinon.stub().returns(true);
+            var schema = new Schema({
+                    name: {
                         validators: [v1, v2],
-                        message: 'Error'
-                    }
+                        message: 'Error',
+                    },
                 });
 
             void(schema.test({
-                'name': 'test'
+                name: 'test',
             }));
 
             sinon.assert.calledOnce(v1);
@@ -25,70 +25,69 @@ describe("Schema", function() {
         });
 
         it("should return valid if all validators pass", function() {
-            var v1 = sinon.stub().returns(true),
-                v2 = sinon.stub().returns(true),
-                v3 = sinon.stub().returns(true),
-                schema = new Schema({
-                    'foo': {
-                        validators: [v1, v2]
+            var v1 = sinon.stub().returns(true);
+            var v2 = sinon.stub().returns(true);
+            var v3 = sinon.stub().returns(true);
+            var schema = new Schema({
+                    foo: {
+                        validators: [v1, v2],
                     },
-                    'bar': {
-                        validators: [v3]
-                    }
+                    bar: {
+                        validators: [v3],
+                    },
                 });
 
             var result = schema.test({
-                'foo': true,
-                'bar': true
+                foo: true,
+                bar: true,
             });
 
             expect(result.valid).to.be.true;
         });
 
         it("should return invalid if any validators fail", function() {
-            var v1 = sinon.stub().returns(true),
-                v2 = sinon.stub().returns(false),
-                v3 = sinon.stub().returns(true),
-                schema = new Schema({
-                    'foo': {
-                        validators: [v1, v2]
+            var v1 = sinon.stub().returns(true);
+            var v2 = sinon.stub().returns(false);
+            var v3 = sinon.stub().returns(true);
+            var schema = new Schema({
+                    foo: {
+                        validators: [v1, v2],
                     },
-                    'bar': {
-                        validators: [v3]
-                    }
+                    bar: {
+                        validators: [v3],
+                    },
                 });
 
             var result = schema.test({
-                'foo': true,
-                'bar': true
+                foo: true,
+                bar: true,
             });
 
             expect(result.valid).to.be.false;
         });
 
-
         it("should call Schema.test() on all array elements", function() {
-            var v = sinon.stub().returns(true),
-                subSchema = new Schema({
-                    'id': {
-                        validators: [v]
-                    }
-                }),
-                schema = new Schema({
-                    'array': {
-                        validators: [subSchema]
-                    }
+            var v = sinon.stub().returns(true);
+            var subSchema = new Schema({
+                    id: {
+                        validators: [v],
+                    },
+                });
+            var schema = new Schema({
+                    array: {
+                        validators: [subSchema],
+                    },
                 });
 
             void(schema.test({
-                'array': [
+                array: [
                     {
-                        'id': 'test1'
+                        id: 'test1',
                     },
                     {
-                        'id': 'test2'
-                    }
-                ]
+                        id: 'test2',
+                    },
+                ],
             }));
 
             sinon.assert.calledTwice(v);
@@ -97,23 +96,23 @@ describe("Schema", function() {
         });
 
         it("should call Schema.test() on object member", function() {
-            var v = sinon.stub().returns(true),
-                subSchema = new Schema({
-                    'id': {
-                        validators: [v]
-                    }
-                }),
-                schema = new Schema({
-                    'obj': {
-                        validators: [subSchema]
-                    }
-                }),
-                obj = {
-                    'id': 1
+            var v = sinon.stub().returns(true);
+            var subSchema = new Schema({
+                    id: {
+                        validators: [v],
+                    },
+                });
+            var schema = new Schema({
+                    obj: {
+                        validators: [subSchema],
+                    },
+                });
+            var obj = {
+                    id: 1,
                 };
 
             void(schema.test({
-                'obj': obj
+                obj: obj,
             }));
 
             sinon.assert.calledOnce(v);
@@ -121,12 +120,12 @@ describe("Schema", function() {
         });
 
         it("should call validator in simple, single-validator schema format", function() {
-            var v = sinon.stub().returns(true),
-                schema = new Schema({
-                    'foo': v
-                }),
-                obj = {
-                    'foo': 1
+            var v = sinon.stub().returns(true);
+            var schema = new Schema({
+                    foo: v,
+                });
+            var obj = {
+                    foo: 1,
                 };
 
             void(schema.test(obj));
@@ -136,13 +135,13 @@ describe("Schema", function() {
         });
 
         it("should call all validators in simple, multiple-validator schema format", function() {
-            var v1 = sinon.stub().returns(true),
-                v2 = sinon.stub().returns(true),
-                schema = new Schema({
-                    'foo': [v1, v2]
-                }),
-                obj = {
-                    'foo': 1
+            var v1 = sinon.stub().returns(true);
+            var v2 = sinon.stub().returns(true);
+            var schema = new Schema({
+                    foo: [v1, v2],
+                });
+            var obj = {
+                    foo: 1,
                 };
 
             void(schema.test(obj));
@@ -154,12 +153,12 @@ describe("Schema", function() {
         });
 
         it("should not fail when optional field is missing", function() {
-            var v = sinon.stub().returns(false),
-                schema = new Schema({
-                    'foo?': v
-                }),
-                obj = {
-                    'bar': 2
+            var v = sinon.stub().returns(false);
+            var schema = new Schema({
+                    'foo?': v,
+                });
+            var obj = {
+                    bar: 2,
                 };
 
             var result = schema.test(obj);
@@ -169,10 +168,10 @@ describe("Schema", function() {
 
         it("should coerce to boolean in simple boolean schema format", function() {
             var schema = new Schema({
-                    'foo': true
-                }),
-                obj = {
-                    'foo': '5'
+                    foo: true,
+                });
+            var obj = {
+                    foo: '5',
                 };
 
             var result = schema.test(obj);
@@ -183,10 +182,10 @@ describe("Schema", function() {
 
         it("should coerce to number in simple number schema format", function() {
             var schema = new Schema({
-                    'foo': 1
-                }),
-                obj = {
-                    'foo': '6'
+                    foo: 1,
+                });
+            var obj = {
+                    foo: '6',
                 };
 
             var result = schema.test(obj);
@@ -197,10 +196,10 @@ describe("Schema", function() {
 
         it("should coerce to string in simple string schema format", function() {
             var schema = new Schema({
-                    'foo': ''
-                }),
-                obj = {
-                    'foo': 5
+                    foo: '',
+                });
+            var obj = {
+                    foo: 5,
                 };
 
             var result = schema.test(obj);
@@ -210,12 +209,12 @@ describe("Schema", function() {
         });
 
         it("should fail when optional field fails validation", function() {
-            var v = sinon.stub().returns(false),
-                schema = new Schema({
-                    'foo?': v
-                }),
-                obj = {
-                    'foo': 1
+            var v = sinon.stub().returns(false);
+            var schema = new Schema({
+                    'foo?': v,
+                });
+            var obj = {
+                    foo: 1,
                 };
 
             var result = schema.test(obj);
@@ -225,12 +224,12 @@ describe("Schema", function() {
         });
 
         it("should fail when required field is missing", function() {
-            var v = sinon.stub().returns(true),
-                schema = new Schema({
-                    'foo': v
-                }),
-                obj = {
-                    'bar': 2
+            var v = sinon.stub().returns(true);
+            var schema = new Schema({
+                    foo: v,
+                });
+            var obj = {
+                    bar: 2,
                 };
 
             var result = schema.test(obj);
@@ -239,16 +238,16 @@ describe("Schema", function() {
         });
 
         it("should pass when testing schema on optional array", function() {
-            var v = sinon.stub().returns(true),
-                arrSch = new Schema({
-                    'foo': v
-                }),
-                objSch = new Schema({
+            var v = sinon.stub().returns(true);
+            var arrSch = new Schema({
+                    foo: v,
+                });
+            var objSch = new Schema({
                     'bar?': {
-                        validators: [arrSch]
-                    }
-                }),
-                obj = {};
+                        validators: [arrSch],
+                    },
+                });
+            var obj = {};
 
             var result = objSch.test(obj);
 
