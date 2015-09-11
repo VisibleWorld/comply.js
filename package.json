@@ -10,7 +10,9 @@
     "url": "https://github.com/VisibleWorld/comply.js.git"
   },
   "scripts": {
-    "lint": "jshint lib && jscs lib"
+    "lint": "jshint lib && jscs lib",
+    "pretest": "npm run lint",
+    "test": "mocha --recursive -R spec test"
   },
   "dependencies": {
     "lodash": "~2.4.1"
