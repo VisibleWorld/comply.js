@@ -11,21 +11,19 @@
   },
   "scripts": {
     "lint": "jshint lib && jscs lib",
-    "pretest": "npm run lint",
-    "test": "mocha --recursive -R spec test"
+    "pretest": "npm run lint -s",
+    "test": "mocha --recursive -R spec test",
+    "dev": "watch 'npm run test -s'"
   },
   "dependencies": {
     "lodash": "~2.4.1"
   },
   "devDependencies": {
     "chai": "^1.9.0",
-    "grunt": "^0.4.2",
-    "grunt-contrib-jshint": "^0.8.0",
-    "grunt-contrib-watch": "^0.5.3",
-    "grunt-mocha-cli": "^1.6.0",
     "jscs": "^2.1.1",
     "jshint": "^2.8.0",
     "mocha": "^1.17.1",
-    "sinon": "^1.8.2"
+    "sinon": "^1.8.2",
+    "watch": "^0.16.0"
   }
 }
