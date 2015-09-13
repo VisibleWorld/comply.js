@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "chai": "^1.9.0",
+    "coveralls": "^2.11.4",
     "istanbul": "^0.3.19",
     "jscs": "^2.1.1",
     "jshint": "^2.8.0",
@@ -31,7 +32,7 @@
     "lint": "jshint lib test && jscs lib test",
     "pretest": "npm run lint -s",
     "test": "mocha --recursive -R spec test",
-    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/",
+    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/ && cat ./coverage/lcov.info | coveralls",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter spec --check-leaks test/",
     "dev": "watch 'npm run test -s'"
   }
