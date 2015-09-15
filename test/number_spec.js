@@ -74,6 +74,25 @@ describe('Schema', function() {
                 sinon.assert.calledOnce(v2);
             });
 
+            it('should ignore non-function variadic arguments as additional validators', function() {
+                var v1 = sinon.stub().returns(true);
+                var v2 = sinon.stub().returns(true);
+                var schema = new Schema({
+                    foo: numberType(1, '*', v1, 2, undefined, false, v2, []),
+                });
+                var obj = {
+                    foo: 3,
+                };
+
+                var result = schema.test(obj);
+
+                expect(result.valid).to.be.true;
+                sinon.assert.calledOnce(v1);
+                sinon.assert.calledWith(v1, 3);
+                sinon.assert.calledOnce(v2);
+                sinon.assert.calledWith(v2, 3);
+            });
+
             it('should coerce value to float', function() {
                 var schema = new Schema({ foo: numberType() });
 

@@ -93,6 +93,25 @@ describe('Schema', function() {
                 sinon.assert.calledOnce(v1);
                 sinon.assert.calledOnce(v2);
             });
+
+            it('should ignore non-function variadic arguments as additional validators', function() {
+                var v1 = sinon.stub().returns(true);
+                var v2 = sinon.stub().returns(true);
+                var schema = new Schema({
+                    foo: stringType(/a[0-9]z/, v1, 2, undefined, false, v2, []),
+                });
+                var obj = {
+                    foo: 'a2z',
+                };
+
+                var result = schema.test(obj);
+
+                expect(result.valid).to.be.true;
+                sinon.assert.calledOnce(v1);
+                sinon.assert.calledWith(v1, 'a2z');
+                sinon.assert.calledOnce(v2);
+                sinon.assert.calledWith(v2, 'a2z');
+            });
         });
     });
 });

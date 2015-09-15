@@ -258,5 +258,46 @@ describe("Schema", function() {
 
             expect(result.valid).to.be.true;
         });
+
+        it("should throw with invalid shortcut validator", function() {
+            var schema = new Schema({
+                foo: undefined,
+            });
+
+            expect(schema.test.bind(schema, {})).to.throw('Invalid validator expression');
+        });
+
+        it("should fail when validator throws exception", function() {
+            var v = sinon.stub().throws();
+            var schema = new Schema({
+                foo: v,
+            });
+            var obj = {
+                foo: 1,
+            };
+
+            var result = schema.test(obj);
+
+            expect(result.valid).to.be.false;
+        });
+
+        it("should ignore non-functions in array of validators", function() {
+            var v1 = sinon.stub().returns(true);
+            var v2 = sinon.stub().returns(true);
+            var schema = new Schema({
+                foo: [v1, 2, undefined, false, v2, []],
+            });
+            var obj = {
+                foo: 'test',
+            };
+
+            var result = schema.test(obj);
+
+            expect(result.valid).to.be.true;
+            sinon.assert.calledOnce(v1);
+            sinon.assert.calledWith(v1, 'test');
+            sinon.assert.calledOnce(v2);
+            sinon.assert.calledWith(v2, 'test');
+        });
     });
 });
