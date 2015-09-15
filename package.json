@@ -7,7 +7,7 @@
     "Alex Naspo <alexn@visibleworld.com>"
   ],
   "license": "MIT",
-  "repository": "VisibleWorld/comply",
+  "repository": "VisibleWorld/comply.js",
   "files": [
     "index.js",
     "lib/"
