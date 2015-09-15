@@ -1,7 +1,7 @@
 {
   "name": "comply-js",
   "description": "Schema enforcement and object sanitizer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Peter Zalewski <peterz@visibleworld.com>",
   "contributors": [
     "Alex Naspo <alexn@visibleworld.com>"
