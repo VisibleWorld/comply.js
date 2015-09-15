@@ -35,5 +35,11 @@
     "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/ && cat ./coverage/lcov.info | coveralls",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter spec --check-leaks test/",
     "dev": "watch 'npm run test -s'"
-  }
+  },
+  "keywords": [
+    "valid",
+    "validate",
+    "schema",
+    "validation"
+  ]
 }
