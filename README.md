@@ -15,7 +15,7 @@ sanitized object or *false* and a list of errors.
 Instantiate a *schema* describing an object's acceptable state.
 
 ```js
-var Schema = require('comply');
+var Schema = require('comply-js');
 
 var personSchema = new Schema({
   firstName: Schema.type.String(1, 100),
