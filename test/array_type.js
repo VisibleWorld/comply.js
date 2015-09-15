@@ -107,6 +107,31 @@ describe('Array type', function() {
         sinon.assert.calledThrice(v2);
     });
 
+    it('should apply schema to elements', function() {
+        var v = sinon.stub().returns(true);
+        var elementSchema = new Schema({
+            bar: v,
+        });
+        var schema = new Schema({
+            foo: arrayType(elementSchema),
+        });
+
+        var object = {
+            foo: [
+                { bar: 1 },
+                { bar: 'x' },
+                { bar: [] },
+            ],
+        };
+
+        schema.test(object);
+
+        sinon.assert.calledThrice(v);
+        sinon.assert.calledWith(v, 1);
+        sinon.assert.calledWith(v, 'x');
+        sinon.assert.calledWith(v, []);
+    });
+
     it('should check that target is array', function() {
         var schema = new Schema({
             foo: arrayType(),
