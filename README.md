@@ -312,6 +312,40 @@ maximum accepted length. All other arguments are assumed to be arbitrary
 validators. If one or more schemas are given, the first one will be tested
 against each element.
 
+#### Booleans
+
+The `Schema.type.Boolean` rule generator accepts any value and sanitizes it
+into `true` or `false`. [Truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy)
+values become `true`. [Falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy)
+values become `false` with two important exceptions: `undefined` and `null`,
+for the purposes of validation, are considered _the absence of a value_ and not
+falsy. For example, given the following schema:
+
+```js
+var bicycle = new Schema({
+  isFixedGearAndSoSoCool: Schema.type.Boolean(),
+});
+```
+
+This object will validate:
+
+```js
+var pureFixCycle = {
+  isFixedGearAndSoSoCool: true,
+};
+```
+
+And this one will fail:
+
+```js
+var bus = {
+  isFixedGearAndSoSoCool: null,
+};
+```
+
+Unlike other rule generators, this does not take any arguments, not even
+additional validators.
+
 #### Anything at All
 
 The `Schema.type.Pass` rule generator accepts any value, judgment-free. It is
