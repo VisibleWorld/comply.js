@@ -1,7 +1,7 @@
 {
   "name": "comply-js",
   "description": "Validate and coerce objects into expected types",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "Peter Zalewski <peterz@visibleworld.com>",
   "contributors": [
     "Alex Naspo <alexn@visibleworld.com>"
