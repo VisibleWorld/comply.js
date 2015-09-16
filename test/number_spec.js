@@ -42,6 +42,16 @@ describe('Schema', function() {
                 expect(valid.valid).to.be.true;
             });
 
+            it('should check minimum with integer minimum', function() {
+                var schema = new Schema({foo: numberType(2)});
+
+                var invalid = schema.test({ foo: 1 });
+                var valid = schema.test({ foo: 3 });
+
+                expect(invalid.valid).to.be.false;
+                expect(valid.valid).to.be.true;
+            });
+
             it('should check minimum with integer minimum and wildcard maximum', function() {
                 var schema = new Schema({foo: numberType(5, '*') });
 
