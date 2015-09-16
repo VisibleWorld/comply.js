@@ -5,7 +5,7 @@
 
 Validate and coerce objects into expected types.
 
-*comply.js* lets you validate arbitrarily deep and complex object hierarchies
+**comply.js** lets you validate arbitrarily deep and complex object hierarchies
 by combining composable schemas. Fields can be validated and optionally
 coerced to a desired type or sanitized. Validation yields *true* and the
 sanitized object or *false* and a list of errors.
@@ -143,8 +143,8 @@ An example of failed validation would be:
 ### Rule Generators
 
 In the previous section, a ruleset was constructed with `Schema.type.String`.
-This is one of several rule generators included in *comply.js*. When creating
-a schema, you can supply complicated ruled, or use one of the generators to
+This is one of several rule generators included in **comply.js**. When creating
+a schema, you can supply complicated rules, or use one of the generators to
 do the dirty work for you.
 
 #### Numbers
@@ -158,7 +158,7 @@ To only check that the value is a number:
 
 ```js
 var livingPerson = new Schema({
-  age: String.type.Number(),
+  age: Schema.type.Number(),
 });
 ```
 
@@ -166,7 +166,7 @@ To check for a minimum, since ages cannot be negative:
 
 ```js
 var livingPerson = new Schema({
-  age: String.type.Number(1),
+  age: Schema.type.Number(1),
 });
 ```
 
@@ -174,7 +174,7 @@ To check for a range, since no one has ever outlived [Jeanne Calment](https://en
 
 ```js
 var livingPerson = new Schema({
-  age: String.type.Number(1, 122),
+  age: Schema.type.Number(1, 122),
 });
 ```
 
@@ -186,7 +186,7 @@ function isEven(n) {
 }
 
 var evenlyAgedPerson = new Schema({
-  age: String.type.Number(isEven),
+  age: Schema.type.Number(isEven),
 });
 ```
 
@@ -255,7 +255,7 @@ arbitrary validators.
 
 The `Schema.type.Array` rule generator can check that a value is an array; that
 it has a minimum length; that it has a maximum length; and that all its
-elements pass the given validation or Schema.
+elements pass the given validators or Schema.
 
 To only check that the value is an array:
 
@@ -316,7 +316,7 @@ against each element.
 
 The `Schema.type.Pass` rule generator accepts any value, judgment-free. It is
 useful when you need to validate that input contains some value for a given
-key but you do not care what it is, so long as it is not null or undefined.
+key but you do not care what it is, so long as it is not `null` or `undefined`.
 
 ```js
 var quizAnswer = new Schema({
