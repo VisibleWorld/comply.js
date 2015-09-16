@@ -139,6 +139,26 @@ describe("Schema", function() {
             sinon.assert.calledWith(v, obj.foo);
         });
 
+        it("should apply schema in simple, schema validator format", function() {
+            var v = sinon.stub().returns(true);
+            var subschema = new Schema({
+                bar: v,
+            });
+            var schema = new Schema({
+                foo: subschema,
+            });
+            var obj = {
+                foo: {
+                    bar: 1,
+                },
+            };
+
+            schema.test(obj);
+
+            sinon.assert.calledOnce(v);
+            sinon.assert.calledWith(v, 1);
+        });
+
         it("should call all validators in simple, multiple-validator schema format", function() {
             var v1 = sinon.stub().returns(true);
             var v2 = sinon.stub().returns(true);
