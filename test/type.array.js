@@ -6,6 +6,7 @@
 var Schema = require('../lib');
 var arrayType = Schema.type.Array;
 var expect = require('chai').expect;
+var should = require('chai').should();
 var sinon = require('sinon');
 
 describe('Schema.type', function() {
@@ -168,5 +169,48 @@ describe('Schema.type', function() {
             expect(schema.test(normalArray).object.foo).to.be.instanceof(Array);
             expect(schema.test(pseudoArray).object.foo).to.be.instanceof(Array);
         });
+
+        it('should return nested errors for array elements', function() {
+            var v1 = sinon.stub().returns(false);
+            v1.errorMessage = 'custom error message 1';
+
+            var v2 = sinon.stub().returns(false);
+            v2.errorMessage = 'custom error message 2';
+
+            var elementSchema = new Schema({
+                bar: {
+                    validators: [v1],
+                    message: 'custom generic error message 1'
+                },
+                baz: {
+                    validators: [v2],
+                    message: 'custom generic error message 2'
+                }
+            });
+            var schema = new Schema({
+                foo: arrayType(1, elementSchema),
+            });
+
+            var object = {
+                foo: [
+                    { bar: 1, baz: 2 },
+                    { bar: 'x', baz: 'y' },
+                    { bar: [] , baz: {}},
+                ],
+            };
+
+            var expected = {
+                errors: [ "\nfoo: row index 0: \ncustom error message 1\n\ncustom error message 2row index 1: \ncustom error message 1\n\ncustom error message 2row index 2: \ncustom error message 1\n\ncustom error message 2"
+],
+                valid: false,
+                object: {},
+            };
+
+            var actual = schema.test(object);
+
+            sinon.assert.calledThrice(v1);
+            actual.should.deep.equal(expected);
+        });
+
     });
 });
