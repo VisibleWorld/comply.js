@@ -6,7 +6,7 @@
 var Schema = require('../lib');
 var arrayType = Schema.type.Array;
 var expect = require('chai').expect;
-var should = require('chai').should();
+require('chai').should();
 var sinon = require('sinon');
 
 describe('Schema.type', function() {
